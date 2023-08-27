@@ -1,0 +1,9 @@
+var b = 3;
+/*aaaaa
+bbb
+/*aa
+aaa
+*/
+ccc
+*/
+var a = 1;
