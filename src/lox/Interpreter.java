@@ -171,7 +171,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     public Object visitGetExpr(Expr.Get expr) {
         Object object = evaluate(expr.object);
         if (object instanceof LoxInstance) {
-            return ((LoxInstance) object).get(expr.name);
+            Object result = ((LoxInstance) object).get(expr.name);
+            if (result instanceof LoxFunction &&
+                    ((LoxFunction) result).isGetter()) {
+                result = ((LoxFunction) result).call(this, null);
+            }
+            return result;
         }
 
         throw new RuntimeError(expr.name,
@@ -279,7 +284,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             LoxFunction function = new LoxFunction(method, environment, false);
             classMethods.put(method.name.lexeme, function);
         }
-        LoxClass metaClass = new LoxClass(null, stmt.name.lexeme+"metaclass", classMethods);
+        LoxClass metaClass = new LoxClass(null, stmt.name.lexeme + "metaclass", classMethods);
 
         Map<String, LoxFunction> methods = new HashMap<>();
         for (Stmt.Function method : stmt.methods) {
