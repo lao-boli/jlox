@@ -350,6 +350,8 @@ class Parser {
             return new Expr.Literal(true);
         if (match(NIL))
             return new Expr.Literal(null);
+        if (match(THIS))
+            return new Expr.This(previous());
         if (match(IDENTIFIER)) {
             return new Expr.Variable(previous());
         }

@@ -8,7 +8,7 @@ public class LoxFunction implements LoxCallable {
 
     private final Stmt.Function declaration;
 
-    LoxFunction(Stmt.Function declaration,Environment closure) {
+    LoxFunction(Stmt.Function declaration, Environment closure) {
         this.declaration = declaration;
         this.closure = closure;
     }
@@ -38,6 +38,12 @@ public class LoxFunction implements LoxCallable {
     @Override
     public String toString() {
         return "<fn " + declaration.name.lexeme + ">";
+    }
+
+    public Object bind(LoxInstance instance) {
+        Environment environment = new Environment(closure);
+        environment.define("this", instance);
+        return new LoxFunction(declaration, environment);
     }
 
 }
