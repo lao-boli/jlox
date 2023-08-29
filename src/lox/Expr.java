@@ -4,6 +4,7 @@ import java.util.List;
 
 abstract class Expr {
   interface Visitor<R> {
+    R visitFunctionExpr(Function expr);
     R visitAssignExpr(Assign expr);
     R visitBinaryExpr(Binary expr);
     R visitCallExpr(Call expr);
@@ -12,6 +13,20 @@ abstract class Expr {
     R visitLogicalExpr(Logical expr);
     R visitUnaryExpr(Unary expr);
     R visitVariableExpr(Variable expr);
+  }
+  static class Function extends Expr {
+    Function(List<Token> parameters, List<Stmt> body) {
+      this.parameters = parameters;
+      this.body = body;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitFunctionExpr(this);
+    }
+
+    final List<Token> parameters;
+    final List<Stmt> body;
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
