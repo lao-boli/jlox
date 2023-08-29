@@ -12,7 +12,8 @@ public class TestMain {
         // Lox.main(new String[]{"D:\\IdeaProjects\\jlox\\src\\test\\FibonacciFun.lox"});
         // Lox.main(new String[]{"D:\\IdeaProjects\\jlox\\src\\test\\closure.lox"});
         // Lox.main(new String[]{"D:\\IdeaProjects\\jlox\\src\\test\\scope.lox"});
-        Lox.main(new String[]{"D:\\IdeaProjects\\jlox\\src\\test\\class.lox"});
+        // Lox.main(new String[]{"D:\\IdeaProjects\\jlox\\src\\test\\class.lox"});
+        Lox.main(new String[]{"D:\\IdeaProjects\\jlox\\src\\test\\classMethod.lox"});
     }
 
 }
