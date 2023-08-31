@@ -369,6 +369,12 @@ class Parser {
             consume(RIGHT_PAREN, "Expect ')' after expression.");
             return new Expr.Grouping(expr);
         }
+        if (match(SUPER)) {
+            Token keyword = previous();
+            consume(DOT, "Expect '.' after super.");
+            Token method = consume(IDENTIFIER, "Expect '.' after super.");
+            return new Expr.Super(keyword,method);
+        }
         throw error(peek(), "Expect expression.");
     }
     //endregion
