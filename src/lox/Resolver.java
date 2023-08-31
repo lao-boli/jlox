@@ -16,7 +16,8 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
     private enum ClassType {
         NONE,
-        CLASS
+        CLASS,
+        SUBCLASS
     }
 
     private final Stack<Map<String, Boolean>> scopes = new Stack<>();
@@ -56,6 +57,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
                       "A class can't inherit from itself.");
         }
         if (stmt.superclass != null) {
+            currentClass = ClassType.SUBCLASS;
             resolve(stmt.superclass);
         }
         if (stmt.superclass != null) {
@@ -207,7 +209,15 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitSuperExpr(Expr.Super expr) {
-        resolveLocal(expr,expr.keyword);
+        // 新增部分开始
+        if (currentClass == ClassType.NONE) {
+            Lox.error(expr.keyword,
+                      "Can't use 'super' outside of a class.");
+        } else if (currentClass != ClassType.SUBCLASS) {
+            Lox.error(expr.keyword,
+                      "Can't use 'super' in a class with no superclass.");
+        }
+        resolveLocal(expr, expr.keyword);
         return null;
     }
 
